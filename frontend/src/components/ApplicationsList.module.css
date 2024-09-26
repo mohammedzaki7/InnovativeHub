@@ -1,0 +1,80 @@
+/* Main applications container */
+.apps {
+  margin: 2rem auto;
+  max-width: 80rem;
+  background-color: rgb(84, 93, 93);
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* List of applications */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Application items */
+.item {
+  background-color: #4a4a4a;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  width: calc(33% - 1rem);
+  min-width: 200px;
+  transition: transform 0.3s ease;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+/* Link inside each item */
+.item a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+/* Hover effect */
+.item a:hover {
+  transform: scale(1.02);
+  background-color: var(--color-gray-700);
+}
+
+/* Image */
+.item img {
+  width: 40%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+/* Content */
+.content {
+  padding: 1rem;
+  width: 60%;
+  text-align: left;
+}
+
+/* Headings */
+.item h2 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.item h4,
+.item date {
+  margin: 0.2rem 0;
+  font-size: 0.85rem;
+}
+
+.item date {
+  font-style: italic;
+}

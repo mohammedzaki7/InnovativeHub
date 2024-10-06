@@ -2,6 +2,7 @@ import { useState } from "react";
 // import UserData from "../components/User";
 import { Link, redirect } from "react-router-dom";
 import UserForm from "../components/UserForm";
+import { json } from "react-router-dom";
 
 
 export default function Signup() {

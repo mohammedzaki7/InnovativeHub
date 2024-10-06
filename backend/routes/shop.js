@@ -75,4 +75,9 @@ router.post(
   shopController.withdrawMoney
 );
 
+router.post(
+  "/application-add-comment/:applicationId",
+  isAuth,
+  shopController.addCommentToApplication
+);
 module.exports = router;

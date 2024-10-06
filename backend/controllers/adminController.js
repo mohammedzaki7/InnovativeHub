@@ -11,6 +11,7 @@ const {
   uploadFiles,
   deleteOldImages,
 } = require("../middleware/uploadingFiles.js"); // Import the upload utility
+const application = require("../models/application");
 
 // Load YAML config file
 const config = yaml.load(fs.readFileSync("./utils/secrets.yaml", "utf8"));
@@ -147,7 +148,6 @@ exports.updateProject = async (req, res, next) => {
     project.price = price;
     project.additionalInfo = additionalInfo;
     project.imagesUrl = imagesUrl;
-    
 
     await project.save();
     res.status(200).json({
@@ -828,7 +828,6 @@ exports.rejectInvitation = async (req, res, next) => {
       const err = new Error("Type is not found");
       err.statusCode = 400;
       throw err;
-      
     }
   } catch (err) {
     if (!err.statusCode) {

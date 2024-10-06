@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const Project = require("../models/project");
 const Application = require("../models/application");
 const User = require("../models/user");
@@ -268,14 +269,13 @@ exports.addToCart = async (req, res, next) => {
       const appExists = appsInAssets.some(
         (app) => app.applicationId.toString() === itemId
       );
-      
-      
+
       if (appExists) {
         return res.status(400).json({
           message: "This application is already in your assets",
         });
       }
-      
+
       const ownApp = user.apps.includes(itemId);
 
       if (ownApp) {
@@ -283,10 +283,7 @@ exports.addToCart = async (req, res, next) => {
           message: "You already own this app",
         });
       }
-    }
-
-    else if(itemType === 'Project')
-    {
+    } else if (itemType === "Project") {
       const ownProject = user.projects.includes(itemId);
 
       if (ownProject) {
@@ -694,6 +691,14 @@ exports.getCheckoutSuccess = async (req, res, next) => {
 exports.addInvestment = async (req, res, next) => {
   const applicationId = req.params.applicationId;
   const amountToInvest = req.body.amountToInvest;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const err = new Error("Validating the data failed");
+    err.statusCode = 422;
+    err.data = errors.array();
+    return next(err);
+  }
+
   try {
     const application = await Application.findById(applicationId);
     const user = await User.findById(req.userId);
@@ -712,7 +717,7 @@ exports.addInvestment = async (req, res, next) => {
       application.maxInvestments
     ) {
       const err = new Error(
-        "Can't exceed the limit of investment for this application"
+        "Can't exceed the limit of investments for this application"
       );
       err.statusCode = 400;
       throw err;
@@ -927,3 +932,32 @@ exports.withdrawMoney = async (req, res, next) => {
 };
 
 // don't forget to test at line 619 and 632 and add that u can't add something to the cart that u already own!
+
+exports.addCommentToApplication = async (req, res, next) => {
+  const applicationId = req.params.applicationId;
+  try {
+    const application = await Application.findById(applicationId);
+    const userMail = req.userMail;
+    if (!application) {
+      const err = new Error("No application is found");
+      err.statusCode = 404;
+      throw err;
+    }
+    const comment = req.body.comment;
+    application.comments.push({
+      userMail: userMail,
+      comment: comment,
+      date: new Date(),
+    });
+    await application.save();
+    res.status(200).json({
+      message: "Successfully added the comment to the application",
+      application: application,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};

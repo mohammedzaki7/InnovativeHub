@@ -1,0 +1,75 @@
+.commentsWrapper {
+  max-height: 300px; /* Limit height */
+  overflow-y: auto; /* Enable scrolling */
+  width: 100%; /* Make sure it takes full width */
+  padding-right: 10px; /* Add space for scrollbar */
+  display: flex;
+  flex-direction: column;
+}
+
+.comment {
+  font-size: 1rem;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-direction: column; /* Stack the email, date, and comment */
+  align-items: flex-start;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+.commentUserMail {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px; /* Space between email and date */
+}
+
+.commentDate {
+  font-size: 0.85rem;
+  font-style: italic; /* Italic for a lighter look */
+  color: #888; /* Lighter color for less emphasis */
+  margin-bottom: 5px; /* Space between date and comment */
+}
+
+.commentText {
+  font-size: 1rem;
+  color: #333;
+}
+
+.commentInput {
+  width: 90%;
+  height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  resize: none;
+  overflow-y: auto;
+}
+
+.submitComment {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submitComment:hover {
+  background-color: #218838;
+}
+
+.error-message {
+  display: flex;
+  flex-direction: column; /* Stack the items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  margin-top: 10px; /* Add some spacing to the top */
+  text-align: center; /* Ensure text is centered */
+}

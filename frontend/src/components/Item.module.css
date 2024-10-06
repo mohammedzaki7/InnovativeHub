@@ -1,0 +1,132 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* Left (Images), Center (Content), Right (Comments) */
+  grid-template-rows: auto;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.images {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.imageRoll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 50px;
+  height: auto;
+  margin: 3px;
+  transition: transform 0.3s;
+  opacity: 0.5;
+}
+
+.activeImage {
+  width: 200px;
+  opacity: 1;
+}
+
+.image:hover {
+  transform: scale(1.1);
+}
+
+.arrow {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  padding: 10px;
+}
+
+.content {
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.price,
+.investments,
+.votes,
+.releaseDate,
+.additionalInfo {
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.addToCartButton,
+.investButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+}
+
+.addToCartButton {
+  background-color: #28a745;
+}
+
+.addToCartButton:hover {
+  background-color: #218838;
+}
+
+.investButton {
+  background-color: #007bff;
+}
+
+.investButton:hover {
+  background-color: #0056b3;
+}
+
+.comments {
+  grid-column: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+strong {
+  font-weight: bold;
+}

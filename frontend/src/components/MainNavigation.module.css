@@ -14,11 +14,11 @@
 
 .list a {
   text-decoration: none;
-  color: rgb(202, 199, 199);
+  color: rgb(255, 255, 255);
 }
 
 .list a:hover,
 .list a.active {
-  color: rgb(187, 165, 61);
+  color: rgb(201, 172, 27);
   text-decoration: underline;
 }

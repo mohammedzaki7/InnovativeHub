@@ -86,6 +86,19 @@ const applicationSchema = new Schema({
     type: Number,
     required: true,
   },
+  comments: [
+    {
+      userMail: {
+        type: String,
+      },
+      comment: {
+        type: String,
+      },
+      date: {
+        type: Date
+      }
+    },
+  ],
 });
 
 module.exports = mongoose.model("Application", applicationSchema);

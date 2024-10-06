@@ -1,127 +1,145 @@
-input {
-  border-radius: 8px;
-  border: solid 2px;
-}
-.group-fields label {
-  display: block;
-  margin-bottom: 0.2rem;
-  align-items: flex-start;
-}
-
-
-.one-field {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.one-field input {
-  width: 200px;
-}
-
-/*   groups two fields together   */
-.group-fields {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-start;
-  margin: 3px;
-}
-
+/* Container Styling */
 .form {
-  max-width: 500px;
-  display: flex;
-  
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(180deg, #c9e4e4, #748686);
-  border-radius: 7px;
-  margin: auto;
-  padding: 0.5rem;
-  box-shadow: 0 0 16px 1px rgba(13, 85, 107, 0.5);
+  max-width: 450px;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  margin: 40px auto; /* Centers form with vertical space */
 }
 
+/* Form heading */
+h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+h5 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #913131;
+  margin-bottom: 1rem;
+}
+
+p {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+/* Input Fields */
+.input-container {
+  position: relative;
+  margin: 20px 0;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none; /* Remove all borders */
+  border-bottom: 2px solid #ccc; /* Add underline */
+  outline: none;
+  background: none; /* Remove any background colors */
+  transition: border-color 0.3s ease; /* Smooth transition for underline */
+}
+
+.input-container input:focus {
+  border-bottom: 2px solid #333; /* Change underline color on focus */
+}
+
+/* Enlarged Label */
+.input-container label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  padding: 0 5px;
+  transition: 0.2s ease all;
+  pointer-events: none;
+  color: #888;
+  font-size: 18px; /* Increase label size */
+  font-weight: 500; /* Make label bolder */
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: -10px;
+  left: 5px;
+  color: #333;
+  font-size: 14px; /* Smaller label when moved up */
+}
+
+/* Error message */
 li {
-  align-items: left;
-  margin-left: 0; /* Ensures no left margin */
-  padding-left: 0; /* Ensures no left padding */
-  list-style-position: inside; /* Makes bullets or numbers appear inside the boundary */
-  text-align: left; /* Keeps text aligned to the left */
   color: darkred;
+  text-align: left;
+  font-size: 14px;
 }
 
-.form-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+/* Buttons *//* Buttons */
+button {
+  border: none ; 
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  width: 30%;
+  margin-top: 0.5rem;
+  margin-right: 10px;
+  transition: opacity 0.3s ease;
 }
 
+button:hover {
+  opacity: 0.7;
+}
+
+.button-confirm{
+  background-color: rgb(40, 141, 40) ; 
+  color: white;
+
+}
+
+/* For any other button variant like button-danger */
 .button-danger {
-  background-color: transparent;
-  color: #d52f11;
+  background-color: #d52f11;
+  color: white;
+  /* border: 2px solid #d52f11;
+  border-radius: 30px;
+  margin-top: 1.5rem; */
 }
 
-.button-danger:hover,
-.button-danger:focus {
-  background-color: transparent;
-  color: #d52f11;
-  border-color: #790505;
+.button-danger:hover {
+  opacity: 0.7;
 }
 
-.input-error {
-  border-color: #a44a3a;
-  border-radius: 8px;
-}
 
-.p-error {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  color: rgb(128, 33, 33);
-  font-size: 0.8rem;
-  /* background-color: #c7c8d8; */
-  padding: 5px;
-  border-radius: 7px;
-}
-
-.p-error p {
-  margin: 0;
-}
-.p-error h3 {
-  margin: 0;
-}
-
-.p-success {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  color: rgb(16, 92, 29);
-  font-size: 0.8rem;
-  /* background-color: #c7c8d8; */
-  padding: 5px;
-  border-radius: 7px;
-}
-
-.p-success p {
-  margin: 0;
-}
-.p-success h3 {
-  margin: 0;
-}
-
+/* Link */
 .login-link {
   display: flex;
   align-items: center;
   font-size: 14px;
   gap: 5px;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.login-link p {
+  margin: 0;
+  line-height: 1;
 }
 
 .login-link a {
-  color: blue; /* Change this to your desired color */
-  text-decoration: none; /* To remove underline */
+  color: blue;
+  text-decoration: none;
 }
 
-/* Optional: Change color on hover */
 .login-link a:hover {
-  color: orange; /* Hover color */
-  text-decoration: none; /* Add underline on hover */
+  color: orange;
 }

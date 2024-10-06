@@ -9,7 +9,7 @@ export default function ApplicationForm() {
         <div className={classes.form}>
           <h2>Create your new application!</h2>
           <div className={classes["one-field"]}>
-            <label htmlFor="email">Title</label>
+            <label htmlFor="title">Title</label>
             <input id="title" type="text" name="title" required />
           </div>
 

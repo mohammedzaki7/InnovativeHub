@@ -77,7 +77,16 @@ router.post(
 
 router.post(
   "/application-add-comment/:applicationId",
+  [body("comment").trim().isLength({ min: 1 })],
   isAuth,
   shopController.addCommentToApplication
 );
+
+router.post(
+  "/project-add-comment/:projectId",
+  [body("comment").trim().isLength({ min: 1 })],
+  isAuth,
+  shopController.addCommentToProject
+);
+
 module.exports = router;

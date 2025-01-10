@@ -93,6 +93,7 @@ button {
   width: 30%;
   margin-top: 0.5rem;
   margin-right: 10px;
+  margin-bottom: 0;
   transition: opacity 0.3s ease;
 }
 
@@ -142,4 +143,43 @@ button:hover {
 
 .login-link a:hover {
   color: orange;
+}
+
+.new-selected-images,
+.existing-images {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Space between image sets */
+  margin-top: 10px;
+  align-items: center; /* Center images horizontally */
+}
+
+.image-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 10px; /* Space between the image and the delete icon */
+}
+
+.image-container img {
+  width: 150px; /* Set a specific width */
+  height: 100px; /* Set a specific height */
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.icon {
+  font-size: 20px;
+  color: red;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.icon-delete:hover {
+  color: rgb(123, 39, 39);
+}
+
+.upload-icon {
+  font-size: 30px;
 }

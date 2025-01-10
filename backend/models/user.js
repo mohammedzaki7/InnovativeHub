@@ -75,7 +75,7 @@ const userSchema = new Schema({
     },
   },
 
-  assets: {
+  purchases: {
     projects: [
       {
         projectId: {

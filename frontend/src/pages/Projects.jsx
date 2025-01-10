@@ -4,5 +4,10 @@ import ProjectsList from "../components/ProjectsList";
 export default function Projects() {
   const projects = useLoaderData();
 
-  return <ProjectsList projects={projects}/>;
+  return (
+    <>
+      <h2>Projects</h2>
+      <ProjectsList projects={projects} />
+    </>
+  );
 }

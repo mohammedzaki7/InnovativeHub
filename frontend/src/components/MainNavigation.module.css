@@ -1,24 +1,86 @@
 .header {
-  max-width: rem; 
-  margin: auto; 
-  padding: 2rem;
+  max-width: 100%;
+  margin: auto;
+  padding: 1rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   background-color: rgb(49, 42, 42);
+  align-items: center; /* Ensure all items in the header are centered */
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center; /* Center all items in the nav */
 }
 
 .list {
   display: flex;
   gap: 1rem;
+  align-items: center; /* Ensure list items are vertically centered */
 }
 
 .list a {
   text-decoration: none;
   color: rgb(255, 255, 255);
+  line-height: 1.5;
+  padding: 0.5rem 0; /* Add some padding for consistency */
 }
 
 .list a:hover,
 .list a.active {
   color: rgb(201, 172, 27);
-  text-decoration: underline;
+}
+
+/* Right section styling */
+.rightSection {
+  display: flex;
+  align-items: center; /* Ensure items in the right section are vertically centered */
+  gap: 1rem;
+}
+
+/* Form styling */
+.authForm {
+  display: inline-flex; /* Change display to inline-flex */
+  justify-content: center;
+  align-items: center; /* Center content vertically */
+  margin: 0; /* Remove any default margins */
+  padding: 0; /* Remove any default padding */
+}
+
+
+/* Button styling */
+.authButton {
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  padding: 0; /* Ensure padding gives a good click area */
+  margin: 0;
+  line-height: 1.5; /* Ensure same line-height as other nav items */
+}
+
+.authButton:hover {
+  color: rgb(201, 172, 27);
+}
+
+/* Search bar styling */
+.searchBar {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  height: 1rem; /* Ensure the height matches the other nav items */
+}
+
+.searchBar::placeholder {
+  color: #999;
+}
+
+.searchBar:focus {
+  outline: none;
+  border: 1px solid rgb(201, 172, 27);
 }

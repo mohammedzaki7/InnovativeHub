@@ -33,7 +33,10 @@ export async function action({ request, params }) {
   const token = data.token; // Assuming the token is in the 'token' field
 
   // Optionally store the token in localStorage or sessionStorage
-  localStorage.setItem("authToken", token);
+  localStorage.setItem("token", token);
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 10);
+  localStorage.setItem('expiration', expiration.toISOString());
 
   // Redirect after successful login
   return redirect("/");

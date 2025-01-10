@@ -1,14 +1,20 @@
 import { useState } from "react";
 import classes from "./Comment.module.css";
+import { getAuthToken } from "../util/auth";
+import { useRouteLoaderData } from "react-router-dom";
 
 export default function Comment({ type, itemId, comments, onNewComment }) {
   const [newComment, setNewComment] = useState(""); // State to hold the new comment
   const [errorMessage, setErrorMessage] = useState("");
+  const token = useRouteLoaderData("root");
+
   const handleAddComment = async () => {
     setErrorMessage("");
     const comment = {
       comment: newComment,
     };
+    const authToken = getAuthToken();
+
     const response = await fetch(
       "http://localhost:3000/" + type + "-add-comment/" + itemId,
       {
@@ -16,8 +22,7 @@ export default function Comment({ type, itemId, comments, onNewComment }) {
         body: JSON.stringify(comment),
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vaGFtbWVkemFraTJAeWFob28uY29tIiwidXNlcklkIjoiNjZhODRmOWUwMWI1ZjcxZDNiOTkyYmZjIiwiaWF0IjoxNzI4MjA4NDc1LCJleHAiOjE3MjgyNDQ0NzV9.1dZ20wBnXxq78_WuEx16uzwVXBhj90IjjwWSjkr_WRg",
+          Authorization: "Bearer " + authToken,
         },
       }
     );
@@ -30,7 +35,9 @@ export default function Comment({ type, itemId, comments, onNewComment }) {
       return;
     }
     if (!response.ok) {
-      setErrorMessage("Unable to post the comment");
+      const result = await response.json();
+      console.log(result);
+      setErrorMessage(result.message || "Unable to post comment");
       return;
     }
     const newCommentData = await response.json(); // Assuming the new comment data is returned in response
@@ -67,19 +74,23 @@ export default function Comment({ type, itemId, comments, onNewComment }) {
         <p>No comments yet</p>
       )}
       {/* Add comment input */}
-      <textarea
-        className={classes.commentInput}
-        placeholder="Add a comment..."
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-      />
-      <button className={classes.submitComment} onClick={handleAddComment}>
-        Submit
-      </button>
-      {errorMessage && (
-        <div className={classes["error-message"]}>
-          <h3>{errorMessage}</h3>
-        </div>
+      {token && (
+        <>
+          <textarea
+            className={classes.commentInput}
+            placeholder="Add a comment..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <button className={classes.submitComment} onClick={handleAddComment}>
+            Submit
+          </button>
+          {errorMessage && (
+            <div className={classes["error-message"]}>
+              <h3>{errorMessage}</h3>
+            </div>
+          )}
+        </>
       )}
     </>
   );

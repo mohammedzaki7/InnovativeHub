@@ -1,30 +1,47 @@
 import classes from "./ApplicationsList.module.css";
 import { Link } from "react-router-dom";
 
-export default function ProjectsList({ projects }) {
+export default function ProjectsList({ projects, myAssets }) {
   return (
-    <div className={classes.apps}>
-      <h2>Top 3 Projects</h2>
-      {/* Check if there are any projects */}
-      {projects.length === 0 ? (
-        <p>No projects available at the moment. Please check back later!</p>
-      ) : (
-        <ul className={classes.list}>
-          {projects.map((projects) => (
-            <li key={projects.id} className={classes.item}>
-              <Link to={"/projects/" + projects._id}>
-                <img src={projects.image} alt={projects.title} />
-                <div className={classes.content}>
-                  <h2>{projects.title}</h2>
-                  <h4>{projects.description}</h4>
-                  <h4>{projects.price}$</h4>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <div className={classes.apps}>
+        {/* Check if there are any projects */}
+        {projects.length === 0 ? (
+          myAssets? 
+          <h3>
+            <strong>
+              You don't have any projects
+            </strong>
+          </h3>
+          :
+          <h3>
+            <strong>
+              No projects available at the moment. Please check back later!
+            </strong>
+          </h3>
+        ) : (
+          <ul className={classes.list}>
+            {projects.map((project) => (
+              <li key={project.id} className={classes.item}>
+                <Link to={"/projects/" + project._id}>
+                  {project.imagesUrl.length > 0 ? (
+                    <img src={project.imagesUrl[0]} alt={project.title} />
+                  ) : (
+                    <img src="/images/project.png" alt="Project" />
+                  )}
+                  <div className={classes.content}>
+                    <h2>{project.title}</h2>
+                    <h4>{project.description}</h4>
+                    <h4>Price: {project.price}$</h4>
+                    <h4>Votes: {project.votes}</h4>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 }
 

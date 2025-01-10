@@ -1,8 +1,11 @@
 /* Main applications container */
+h3 {
+  color: white;
+}
 .apps {
   margin: 2rem auto;
   max-width: 80rem;
-  background-color: rgb(84, 93, 93);
+  background-color: rgb(53, 70, 70);
   border: 2px solid #fff;
   border-radius: 8px;
   padding: 1rem;
@@ -20,25 +23,27 @@
 
 /* Application items */
 .item {
-  background-color: #4a4a4a;
+  background-color: #d0e3eb;
   border: 1px solid #ddd;
   border-radius: 12px;
   overflow: hidden;
-  width: calc(33% - 1rem);
-  min-width: 200px;
+  width: calc(33% - 1rem); /* Fixed width with margin */
+  max-width: 300px; /* Limit max width */
+  height: 270px; /* Fixed height */
   transition: transform 0.3s ease;
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  flex-direction: column; /* Stack image and content vertically */
 }
 
 /* Link inside each item */
 .item a {
-  color: white;
+  color: rgb(0, 0, 0);
   text-decoration: none;
   display: flex;
-  width: 100%;
-  align-items: center;
+  flex-direction: column; /* Stack image and content vertically */
+  height: 100%;
+  max-height: 200px;
 }
 
 /* Hover effect */
@@ -49,18 +54,21 @@
 
 /* Image */
 .item img {
-  width: 40%;
-  height: 100%;
+  width: 100%; /* Full width of the item */
+  height: 50%; /* Take 50% of the item's height */
   object-fit: cover;
   border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 /* Content */
 .content {
   padding: 1rem;
-  width: 60%;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50%; /* Remaining 50% of the item's height */
 }
 
 /* Headings */

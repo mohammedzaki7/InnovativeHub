@@ -1,8 +1,10 @@
 import classes from "./Form.module.css";
-import { Link, Form, useActionData } from "react-router-dom";
+import { Link, Form, useActionData, useNavigation } from "react-router-dom";
 
 export default function UserForm() {
   const data = useActionData();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
   return (
     <div>
@@ -42,8 +44,12 @@ export default function UserForm() {
           >
             Reset Password
           </button> */}
-          <button type="submit" className={classes["button-confirm"]}>
-            Login
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={classes["button-confirm"]}
+          >
+            {isSubmitting ? "Submitting" : "Login"}
           </button>
           <div className={classes["login-link"]}>
             <p>Don't have an account yet?</p>

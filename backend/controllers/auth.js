@@ -79,3 +79,23 @@ exports.signup = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      const err = new Error("Error - user not found");
+      err.statusCode = 404;
+      throw err;
+    }
+    res.status(200).json({
+      message: "Retreived user successfully",
+      user: user,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};

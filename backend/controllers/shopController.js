@@ -101,7 +101,9 @@ exports.getApplications = async (req, res, next) => {
 exports.getProject = async (req, res, next) => {
   const projectId = req.params.projectId;
   try {
-    const project = await Project.findById(projectId).populate("owner");
+    const project = await Project.findById(projectId)
+      .populate("owner")
+      .populate("workers");
     if (!project) {
       const err = new Error("No project is found");
       err.statusCode = 404;
@@ -122,9 +124,9 @@ exports.getProject = async (req, res, next) => {
 exports.getApplication = async (req, res, next) => {
   const applicationId = req.params.applicationId;
   try {
-    const application = await Application.findById(applicationId).populate(
-      "owner"
-    );
+    const application = await Application.findById(applicationId)
+      .populate("owner")
+      .populate("developers");
     if (!application) {
       const err = new Error("No application is found");
       err.statusCode = 404;
@@ -723,8 +725,17 @@ exports.addInvestment = async (req, res, next) => {
       throw err;
     }
 
-    if (amountToInvest < 0 || amountToInvest > user.moneyInBank) {
-      const err = new Error("Investing process failed");
+    if (amountToInvest > user.moneyInBank) {
+      const err = new Error(
+        "Investing process failed, you don't have enough money."
+      );
+      err.statusCode = 400;
+      throw err;
+    }
+    if (amountToInvest < 0) {
+      const err = new Error(
+        "Investing process failed, please enter a number greater than 0."
+      );
       err.statusCode = 400;
       throw err;
     }
@@ -775,7 +786,7 @@ exports.vote = async (req, res, next) => {
     if (itemType === "Project") {
       const project = await Project.findById(itemId);
       if (!project) {
-        const err = new Error("Project not found");
+        const err = new Error("Error - Project not found");
         err.statusCode = 404;
         throw err;
       }
@@ -809,7 +820,7 @@ exports.vote = async (req, res, next) => {
     } else if (itemType === "Application") {
       const application = await Application.findById(itemId);
       if (!application) {
-        const err = new Error("Application not found");
+        const err = new Error("Error - Application not found");
         err.statusCode = 404;
         throw err;
       }
@@ -827,6 +838,7 @@ exports.vote = async (req, res, next) => {
         return res.status(200).json({
           message: "User removed the vote from the application",
           application: application,
+          votes: application.votes,
         });
       } else {
         user.votes.applications.push({
@@ -838,6 +850,7 @@ exports.vote = async (req, res, next) => {
         return res.status(200).json({
           message: "User voted for the application",
           application: application,
+          votes: application.votes,
         });
       }
     }
@@ -936,6 +949,13 @@ exports.withdrawMoney = async (req, res, next) => {
 exports.addCommentToApplication = async (req, res, next) => {
   const applicationId = req.params.applicationId;
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const err = new Error("Can't add a blank comment");
+      err.statusCode = 422;
+      err.data = errors.array();
+      return next(err);
+    }
     const application = await Application.findById(applicationId);
     const userMail = req.userMail;
     if (!application) {
@@ -953,6 +973,42 @@ exports.addCommentToApplication = async (req, res, next) => {
     res.status(200).json({
       message: "Successfully added the comment to the application",
       application: application,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.addCommentToProject = async (req, res, next) => {
+  const projectId = req.params.projectId;
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const err = new Error("Can't add a blank comment");
+      err.statusCode = 422;
+      err.data = errors.array();
+      return next(err);
+    }
+    const project = await Project.findById(projectId);
+    const userMail = req.userMail;
+    if (!project) {
+      const err = new Error("No project is found");
+      err.statusCode = 404;
+      throw err;
+    }
+    const comment = req.body.comment;
+    project.comments.push({
+      userMail: userMail,
+      comment: comment,
+      date: new Date(),
+    });
+    await project.save();
+    res.status(200).json({
+      message: "Successfully added the comment to the project",
+      project: project,
     });
   } catch (err) {
     if (!err.statusCode) {

@@ -1,0 +1,26 @@
+.star-voted {
+    align-self: flex-start;
+    justify-content: right;
+    font-size: 2rem; /* Increase the size */
+    color: gold; /* Give the star a gold color */
+    cursor: pointer; /* Make the star clickable */
+    margin-bottom: 10px; /* Space it from the comments section */
+    text-align: center; /* Center the star */
+  }
+  
+  .star-voted:hover,
+  .star-not-voted:hover  {
+    color: darkorange; /* Change color on hover */
+    transform: scale(1.1); /* Slightly increase the size on hover */
+    transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
+  }
+  
+  .star-not-voted {
+    align-self: flex-start;
+    justify-content: right;
+    font-size: 2rem; /* Increase the size */
+    color: rgb(128, 128, 125); /* Give the star a gold color */
+    cursor: pointer; /* Make the star clickable */
+    margin-bottom: 10px; /* Space it from the comments section */
+    text-align: center; /* Center the star */
+  }

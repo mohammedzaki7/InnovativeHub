@@ -162,25 +162,26 @@ exports.updateProject = async (req, res, next) => {
   }
 };
 
-exports.retrieveProjects = async (req, res, next) => {
-  try {
-    const projects = await Project.find({ owner: req.userId });
-    if (projects.length === 0) {
-      res.status(404).json({
-        message: "No projects are found",
-      });
-    }
-    res.status(200).json({
-      message: "Retrieved projects successfully",
-      projects: projects,
-    });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-};
+// exports.retrieveProjects = async (req, res, next) => {
+//   try {
+//     const projects = await Project.find({ owner: req.userId });
+//     if (projects.length === 0) {
+//       res.status(200).json({
+//         message: "No projects are found",
+//         projects: [],
+//       });
+//     }
+//     res.status(200).json({
+//       message: "Retrieved projects successfully",
+//       projects: projects,
+//     });
+//   } catch (err) {
+//     if (!err.statusCode) {
+//       err.statusCode = 500;
+//     }
+//     next(err);
+//   }
+// };
 
 exports.deleteProject = async (req, res, next) => {
   const projectId = req.params.projectId;
@@ -244,7 +245,7 @@ exports.uploadApplication = async (req, res, next) => {
 
   const owner = req.userId;
   const developers = [req.userId];
-  let dateReleased = released ? new Date() : null;
+  let dateReleased = released === "true" ? new Date() : null;
 
   const application = new Application({
     title,
@@ -263,7 +264,7 @@ exports.uploadApplication = async (req, res, next) => {
     votes: 0,
     released,
     dateReleased,
-    expectedReleaseDate: released ? null : expectedReleaseDate,
+    expectedReleaseDate: released === "true" ? null : expectedReleaseDate,
   });
 
   try {
@@ -283,7 +284,6 @@ exports.uploadApplication = async (req, res, next) => {
     next(err);
   }
 };
-
 exports.updateApplication = async (req, res, next) => {
   const applicationId = req.params.applicationId;
   const errors = validationResult(req);
@@ -295,13 +295,18 @@ exports.updateApplication = async (req, res, next) => {
     return next(err);
   }
 
-  const title = req.body.title;
-  const description = req.body.description;
-  const price = req.body.price;
-  const maxInvestments = req.body.maxInvestments;
-  const percentageGivenAway = req.body.percentageGivenAway;
-  const released = req.body.released;
-  const additionalInfo = req.body.additionalInfo;
+  const {
+    title,
+    description,
+    price,
+    maxInvestments,
+    percentageGivenAway,
+    released,
+    additionalInfo,
+    existingImages, // Expecting this from the client as an array of current image URLs to retain
+  } = req.body;
+
+  console.log(existingImages);
   let dateReleased;
   let expectedReleaseDate;
 
@@ -325,15 +330,31 @@ exports.updateApplication = async (req, res, next) => {
       throw err;
     }
 
-    // Delete old images before updating
-    await deleteOldImages(application.imagesUrl);
-
-    // Check if new files were uploaded
-    let imagesUrl = req.files ? req.files.map((file) => file.location) : [];
-    // If no new files were uploaded, keep the existing images
-    if (imagesUrl.length === 0) {
-      imagesUrl = application.imagesUrl; // Keep existing images
+    // Ensure existingImages is an array
+    let existingImages = req.body.existingImages;
+    if (typeof existingImages === "string") {
+      existingImages = [existingImages];
     }
+
+    // Identify images to delete (those in `application.imagesUrl` but not in `existingImages`)
+    const imagesToDelete = application.imagesUrl.filter(
+      (url) => !existingImages.includes(url)
+    );
+
+    // Delete only the images that are not retained
+    if (imagesToDelete.length > 0) {
+      await deleteOldImages(imagesToDelete);
+    }
+
+    // Combine existing and new images
+    const newImagesUrl = req.files
+      ? req.files.map((file) => file.location)
+      : [];
+    let imagesUrl;
+
+    if (existingImages && existingImages.length > 0) {
+      imagesUrl = [...existingImages, ...newImagesUrl];
+    } else imagesUrl = [...newImagesUrl];
 
     // Update application details
     application.title = title;
@@ -360,24 +381,6 @@ exports.updateApplication = async (req, res, next) => {
   }
 };
 
-exports.retrieveApplications = async (req, res, next) => {
-  const userId = req.userId;
-  try {
-    const applications = await Application.find({ owner: userId });
-    if (applications.length === 0) {
-      return res.status(404).json({ message: "No appliations are found" });
-    }
-    return res.status(200).json({
-      message: "Successfully retrieved applications",
-      applications: applications,
-    });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-};
 
 exports.deleteApplication = async (req, res, next) => {
   const applicationId = req.params.applicationId;
@@ -829,6 +832,64 @@ exports.rejectInvitation = async (req, res, next) => {
       err.statusCode = 400;
       throw err;
     }
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.retrieveApplicationsAndProjects = async (req, res, next) => {
+  const userId = req.userId;
+  try {
+    const user = await User.findById(userId)
+      .populate({
+        path: "projects", 
+        model: "Project",
+      })
+      .populate({
+        path: "apps", 
+        model: "Application",
+      });
+    if (!user) {
+      return res.status(404).json({ message: "User is not found" });
+    }
+    return res.status(200).json({
+      message: "Successfully retrieved applications and projects",
+      applications: user.apps,
+      projects: user.projects
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.retrievePurchasesApplicationsAndProjects = async (req, res, next) => {
+  const userId = req.userId;
+  try {
+    const user = await User.findById(userId)
+      .populate({
+        path: "purchases.projects.projectId", 
+        model: "Project",
+      })
+      .populate({
+        path: "purchases.applications.applicationId", 
+        model: "Application",
+      });
+    if (!user) {
+      return res.status(404).json({ message: "User is not found" });
+    }
+    console.log(user.purchases.projects);
+    console.log(user.purchases.applications);
+    return res.status(200).json({
+      message: "Successfully retrieved applications and projects",
+      applications: user.purchases.projects,
+      projects: user.purchases.applications
+    });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

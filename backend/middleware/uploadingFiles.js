@@ -34,7 +34,7 @@ const uploadFiles = multer({
     const mimeType = fileTypes.test(file.mimetype);
     cb(null, extname && mimeType);
   },
-}).array("images", 10); // Allows up to 10 images per upload
+}).array("images", 5); // Allows up to 10 images per upload
 
 
 // Function to delete old images from S3// Function to delete old images from S3

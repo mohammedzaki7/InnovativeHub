@@ -1,0 +1,29 @@
+/* Items.module.css */
+.title-add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
+    margin-bottom: 20px;
+    position: relative; /* Enables absolute positioning for the icon */
+  }
+  
+  h2 {
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* Ensures h2 takes up space to remain centered */
+  }
+  
+  .addIcon {
+    font-size: 52px; /* Adjust the size of the plus icon */
+    cursor: pointer; /* Make the icon clickable */
+    color: #26b629; /* Color for the plus icon */
+    transition: color 0.3s ease; /* Add hover effect */
+    position: absolute;
+    right: 150px; /* Add 150px margin-right equivalent */
+    bottom: 0px;
+  }
+  
+  .addIcon:hover {
+    color: #1c6807; /* Change color on hover */
+  }
+  
